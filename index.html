@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AishPlug Workspace</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=Noto+Sans+Hebrew:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Sans','Noto Sans Hebrew',sans-serif;background:#fff;color:#1a1a1a;direction:rtl;text-align:right}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 60px}
+a{color:#1565C0;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Header */
+.hdr{padding:28px 0 16px;border-bottom:2px solid #1a1a1a}
+.hdr h1{font-size:28px;font-weight:600;letter-spacing:-.5px;display:inline}
+.hdr .sub{font-size:13px;color:#888;font-weight:300;margin-right:10px}
+.hdr p{font-size:12px;color:#999;margin-top:4px;font-weight:300;line-height:1.6}
+.hdr .en{direction:ltr;display:inline;unicode-bidi:isolate;font-size:11px;color:#aaa;font-weight:400}
+
+/* Nav */
+.nav{display:flex;gap:4px;padding:10px 0;border-bottom:1px solid #eee;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav button{padding:6px 13px;border-radius:6px;border:none;cursor:pointer;background:transparent;color:#555;font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .15s}
+.nav button.on{background:#1a1a1a;color:#fff}
+.nav .badge{font-size:9px;padding:1px 6px;border-radius:7px;font-weight:600;color:#fff}
+
+/* Metrics */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:20px 0 28px}
+.metric{background:#fafafa;border-radius:8px;padding:14px 12px;border:1px solid #f0f0f0}
+.metric .lab{font-size:11px;color:#888;margin-bottom:3px}
+.metric .val{font-size:26px;font-weight:600}
+
+/* Section */
+.sec-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;margin-top:20px}
+.sec-hdr h2{font-size:15px;font-weight:600}
+.sec-hdr button{font-size:11px;color:#1565C0;background:none;border:none;cursor:pointer;font-family:inherit}
+
+/* Cards */
+.card{padding:11px 13px;background:#fafafa;border-radius:6px;margin-bottom:7px;border:1px solid #f0f0f0}
+.card-accent{border-right:3px solid}
+.tag{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600;display:inline-block}
+.meta{font-size:11px;color:#999}
+.card p{font-size:13px;color:#333;margin-top:4px;line-height:1.6}
+
+/* Forms */
+.form-box{background:#fafafa;border-radius:8px;padding:14px;margin-bottom:18px;border:1px solid #f0f0f0}
+textarea,input[type=text]{width:100%;padding:9px 11px;border-radius:6px;border:1px solid #ddd;font-size:13px;font-family:inherit;direction:rtl;resize:vertical}
+textarea:focus,input[type=text]:focus{outline:none;border-color:#aaa}
+.form-row{display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:wrap}
+.tag-btn{font-size:11px;padding:3px 10px;border-radius:4px;cursor:pointer;font-family:inherit;font-weight:500;border:1px solid #ddd;background:#fff;transition:all .12s}
+.tag-btn.on{border-width:2px}
+.btn-primary{padding:6px 18px;border-radius:6px;border:none;background:#1a1a1a;color:#fff;font-size:12px;cursor:pointer;font-family:inherit;font-weight:500}
+.btn-sm{font-size:10px;padding:2px 8px;border-radius:4px;cursor:pointer;font-family:inherit;border:1px solid}
+.btn-outline{padding:6px 14px;border-radius:6px;border:1px solid #ddd;background:#fff;font-size:12px;cursor:pointer;font-family:inherit;color:#555}
+
+/* Tasks */
+.task-group{margin-bottom:18px}
+.task-group .gh{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.task-item{padding:9px 12px;background:#fafafa;border-radius:6px;margin-bottom:5px;border:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.task-item .name{font-size:13px;display:flex;align-items:center;gap:7px;flex:1;min-width:0}
+.task-item .name span{word-break:break-word}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.task-btns{display:flex;gap:3px;flex-shrink:0}
+
+/* Mockups */
+.mock-tabs{display:flex;gap:5px;margin-bottom:14px}
+.mock-tabs button{padding:5px 13px;border-radius:6px;border:none;font-size:12px;cursor:pointer;font-family:inherit;font-weight:500;transition:all .12s}
+.mock-tabs button.on{background:#1a1a1a;color:#fff}
+.mock-tabs button:not(.on){background:#f0f0f0;color:#555}
+.mock-wrap{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.phone{width:290px;background:#f8f8f8;border-radius:22px;padding:14px;border:1px solid #e0e0e0;flex-shrink:0;direction:ltr;text-align:left}
+.phone .sb{display:flex;justify-content:space-between;font-size:10px;color:#999;margin-bottom:10px}
+.phone .sb b{font-weight:600}
+.phone .sh{font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:3px}
+.phone .sd{font-size:11px;color:#888;margin-bottom:14px}
+.phone .si{padding:9px 11px;background:#fff;border-radius:7px;margin-bottom:5px;font-size:12px;color:#333;border:1px solid #eee}
+.phone .dots{display:flex;justify-content:center;gap:4px;margin-top:14px}
+.phone .dots span{width:6px;height:6px;border-radius:50%;background:#ddd}
+.phone .dots span.on{background:#1a1a1a}
+.mock-info{flex:1;min-width:180px}
+.mock-info h3{font-size:14px;font-weight:600;margin-bottom:6px;direction:rtl;text-align:right}
+.mock-info p{font-size:13px;color:#555;line-height:1.7;direction:rtl;text-align:right}
+.mock-nav{display:flex;gap:7px;margin-top:14px;direction:rtl}
+
+/* Docs */
+.doc-card{padding:13px 15px;background:#fafafa;border-radius:8px;margin-bottom:7px;border:1px solid #f0f0f0}
+.doc-card h3{font-size:14px;font-weight:600}
+.doc-card .dd{font-size:12px;color:#666;margin-top:2px}
+.doc-card .dt{font-size:11px;color:#999;margin-top:3px}
+.placeholder{margin-top:20px;padding:18px;background:#f0f4f8;border-radius:8px;text-align:center}
+.placeholder p{font-size:13px;color:#555}
+.placeholder .sm{font-size:11px;color:#888;margin-top:3px}
+
+/* Sync bar */
+.sync{margin-top:32px;padding:14px;background:#fafafa;border-radius:8px;border:1px solid #f0f0f0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sync .ts{font-size:11px;color:#999;margin-right:auto}
+
+/* Question expand */
+.q-answers{margin-top:7px;padding-top:7px;border-top:1px solid #eee}
+.q-answer{font-size:12px;color:#555;margin-bottom:4px;padding-right:11px;border-right:2px solid #ddd}
+.q-answer b{font-weight:500}
+.q-actions{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.q-reply{margin-top:7px;display:flex;gap:5px}
+.q-reply input{flex:1;padding:6px 9px;border-radius:4px;border:1px solid #ddd;font-size:12px;font-family:inherit;direction:rtl}
+
+/* Responsive */
+@media(max-width:600px){
+  .mock-wrap{flex-direction:column}
+  .phone{width:100%}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .sync{flex-direction:column;align-items:stretch}
+  .sync .ts{margin-right:0;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+// ===== DATA =====
+const INIT={
+updates:[
+{id:"u1",date:"2026-03-18",author:"Tal",text:"Project launch — initial product document completed, interactive mockups built.",tag:"milestone"},
+{id:"u2",date:"2026-03-18",author:"Tal",text:"Critical halachic issue identified: what happens if the cook starts cooking before the halachic 'ignition'? Three solution directions proposed — awaiting posek's ruling.",tag:"blocker"}
+],
+questions:[
+{id:"q1",date:"2026-03-18",author:"Tal",text:"Does a remote power cycle (disconnect/reconnect electricity) count as 'fire ignition by a Jew' (aish yisrael)?",status:"open",category:"Halacha",answers:[]},
+{id:"q2",date:"2026-03-18",author:"Tal",text:"Must the ignition happen BEFORE placing food on the heat source, or is it sufficient that a Jew participated at any point?",status:"open",category:"Halacha",answers:[]},
+{id:"q3",date:"2026-03-18",author:"Tal",text:"Electric stovetop with 4 burners on a single outlet — does one power cycle cover all burners?",status:"open",category:"Halacha",answers:[]},
+{id:"q4",date:"2026-03-18",author:"Tal",text:"Normally Off vs Normally On — what's the correct technical/halachic direction?",status:"open",category:"Architecture",answers:[]},
+{id:"q5",date:"2026-03-18",author:"Tal",text:"Which specific Tuya smart plug to buy for pilot? Need to verify API compatibility, local plug type, energy monitoring accuracy.",status:"open",category:"Hardware",answers:[]},
+{id:"q6",date:"2026-03-18",author:"Tal",text:"What if the cook starts cooking BEFORE the mashgiach approves? Three proposed solutions — need posek ruling.",status:"open",category:"Halacha",answers:[]},
+{id:"q7",date:"2026-03-18",author:"Tal",text:"Business model: sell to kashrus organizations or directly to restaurants? Hybrid?",status:"open",category:"Business",answers:[]}
+],
+tasks:[
+{id:"t1",text:"Get halachic approval for power cycle mechanism",status:"blocked",priority:"critical"},
+{id:"t2",text:"Purchase 5-10 smart plugs for pilot",status:"todo",priority:"high"},
+{id:"t3",text:"Develop basic app (cook + mashgiach variants)",status:"todo",priority:"high"},
+{id:"t4",text:"Pilot with 3-5 restaurants",status:"todo",priority:"medium"},
+{id:"t5",text:"Find technical co-founder/partner",status:"inprogress",priority:"high"},
+{id:"t6",text:"Close business model with first kashrus org",status:"todo",priority:"medium"},
+{id:"t7",text:"Draft halachic questions document for posek",status:"todo",priority:"critical"},
+{id:"t8",text:"Research competing solutions",status:"todo",priority:"medium"}
+]
+};
+
+const TAGS={milestone:{l:"\u05D0\u05D1\u05DF \u05D3\u05E8\u05DA",bg:"#E8F5E9",c:"#2E7D32"},blocker:{l:"\u05D7\u05D5\u05E1\u05DD",bg:"#FFEBEE",c:"#C62828"},update:{l:"\u05E2\u05D3\u05DB\u05D5\u05DF",bg:"#E3F2FD",c:"#1565C0"},decision:{l:"\u05D4\u05D7\u05DC\u05D8\u05D4",bg:"#FFF3E0",c:"#E65100"}};
+const QS={open:{l:"\u05E4\u05EA\u05D5\u05D7",bg:"#FFF3E0",c:"#E65100"},inreview:{l:"\u05D1\u05D1\u05D3\u05D9\u05E7\u05D4",bg:"#E3F2FD",c:"#1565C0"},resolved:{l:"\u05E0\u05E4\u05EA\u05E8",bg:"#E8F5E9",c:"#2E7D32"}};
+const TS={blocked:{l:"\u05D7\u05E1\u05D5\u05DD",bg:"#FFEBEE",c:"#C62828"},inprogress:{l:"\u05D1\u05EA\u05D4\u05DC\u05D9\u05DA",bg:"#E3F2FD",c:"#1565C0"},todo:{l:"\u05DC\u05D1\u05D9\u05E6\u05D5\u05E2",bg:"#EFEBE9",c:"#5D4037"},done:{l:"\u05D4\u05D5\u05E9\u05DC\u05DD",bg:"#E8F5E9",c:"#2E7D32"}};
+const PR={critical:{l:"\u05E7\u05E8\u05D9\u05D8\u05D9",c:"#C62828"},high:{l:"\u05D2\u05D1\u05D5\u05D4",c:"#E65100"},medium:{l:"\u05D1\u05D9\u05E0\u05D5\u05E0\u05D9",c:"#1565C0"},low:{l:"\u05E0\u05DE\u05D5\u05DA",c:"#5D4037"}};
+const CATS=["Halacha","Architecture","Hardware","Business","Other"];
+
+const MOCK={
+cook:[
+{t:"My devices",d:"The cook sees all connected devices",items:["Main oven — Active","Baking oven — Off","Stovetop 1 — Active","Stovetop 2 — Off"]},
+{t:"Request ignition",d:"Select device and request ignition",items:["Baking oven \u00B7 Bakers Pride \u00B7 220V","Status: Off","Last ignition: Today 06:45","Current draw: 0W","\u25B6 Request ignition"]},
+{t:"Waiting for approval",d:"Request sent \u2014 waiting for mashgiach",items:["\u23F3 Waiting for mashgiach approval...","Baking oven \u00B7 Bakers Pride","Sent 15 seconds ago","On-duty: Rabbi Cohen","\u2716 Cancel request"]},
+{t:"Device ready",d:"Approved \u2014 oven is ON",items:["\u2714 Baking oven is ON","Approved by Rabbi Cohen \u00B7 08:32","Current draw: 2,450W","Uptime: 3 min","Set your oven as needed \u2014 everything is logged"]}
+],
+mashgiach:[
+{t:"Dashboard",d:"Overview of all sites",items:["7 Active sites","1 Pending request","0 Alerts","\u2014\u2014\u2014","Shalom Restaurant \u00B7 1 pending","King David Hotel \u00B7 OK","Alon Catering \u00B7 OK"]},
+{t:"Incoming request",d:"New ignition request details",items:["\u26A0 New ignition request","Shalom Restaurant \u00B7 Baking oven","Requester: Ahmed (Head Chef)","Last ignition: Today 06:45","Current draw: 0W (off)","\u2714 Approve ignition | \u2716 Decline"]},
+{t:"Identity verification",d:"2FA before approval",items:["\uD83D\uDD12 Identity verification","Required before approving ignition","Use fingerprint or PIN code","\u25CF \u25CF \u25CB \u25CB","Only the authorized mashgiach can approve"]},
+{t:"Ignition complete",d:"Power cycle done successfully",items:["\u2714 Ignition successful","Shalom Restaurant \u00B7 Baking oven","Disconnect time: 3 seconds","Draw: 0W \u2192 2,450W","Verification: 2FA \u2714","LOG #4821 \u00B7 Sig: a7f3...8c2d"]}
+],
+alerts:[
+{t:"Unauthorized use",d:"Suspicious power draw detected",items:["\uD83D\uDED1 Unauthorized use detected","Shalom Restaurant \u00B7 Stovetop 2","Spike: 0W \u2192 1,800W","No ignition request found","Possible: Physical bypass (direct plug?)","Mark as handled | Report"]},
+{t:"Device offline",d:"Communication lost",items:["\u26A0 Device offline","King David Hotel \u00B7 Oven 3","No communication for 45 minutes","Last connection: 09:15","Last draw: 3,200W (active)","Possible WiFi outage or plug removal"]}
+]
+};
+
+// ===== STATE =====
+const SK="aishplug-ws-v2";
+let D,tab="dashboard",expandedQ=null,replyQ=null;
+
+function load(){try{const s=localStorage.getItem(SK);D=s?JSON.parse(s):JSON.parse(JSON.stringify(INIT))}catch(e){D=JSON.parse(JSON.stringify(INIT))}}
+function save(){localStorage.setItem(SK,JSON.stringify(D));localStorage.setItem(SK+"-ts",new Date().toISOString())}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function today(){return new Date().toISOString().slice(0,10)}
+function esc(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML}
+
+// ===== RENDER =====
+function render(){
+const app=document.getElementById("app");
+const openQ=D.questions.filter(q=>q.status==="open").length;
+const blockedT=D.tasks.filter(t=>t.status==="blocked").length;
+let h=`
+<div class="hdr">
+<h1>AishPlug</h1><span class="sub">workspace</span>
+<p>\u05D4\u05D3\u05DC\u05E7\u05EA \u05D0\u05E9 \u05DE\u05E8\u05D7\u05D5\u05E7 \u05DC\u05DE\u05E9\u05D2\u05D9\u05D7\u05D9 \u05DB\u05E9\u05E8\u05D5\u05EA \u00B7 <span class="en">Remote fire ignition for kosher supervisors</span></p>
+</div>
+<div class="nav">
+${navBtn("dashboard","\u05E1\u05E7\u05D9\u05E8\u05D4")}
+${navBtn("updates","\u05E2\u05D3\u05DB\u05D5\u05E0\u05D9\u05DD",D.updates.length,"#1565C0")}
+${navBtn("questions","\u05E9\u05D0\u05D9\u05DC\u05EA\u05D5\u05EA",openQ,"#E65100")}
+${navBtn("tasks","\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA",blockedT,"#C62828")}
+${navBtn("mockups","\u05DE\u05D5\u05E7\u05D0\u05E4\u05D9\u05DD")}
+${navBtn("docs","\u05DE\u05E1\u05DE\u05DB\u05D9\u05DD")}
+</div>`;
+
+if(tab==="dashboard") h+=renderDashboard();
+else if(tab==="updates") h+=renderUpdates();
+else if(tab==="questions") h+=renderQuestions();
+else if(tab==="tasks") h+=renderTasks();
+else if(tab==="mockups") h+=renderMockups();
+else if(tab==="docs") h+=renderDocs();
+
+h+=renderSync();
+app.innerHTML=h;
+attachEvents();
+}
+
+function navBtn(id,label,badge,bc){
+return `<button class="${tab===id?"on":""}" onclick="setTab('${id}')">${label}${badge>0?`<span class="badge" style="background:${tab===id?"rgba(255,255,255,.2)":bc}">${badge}</span>`:""}</button>`;
+}
+
+function tagHtml(t){const tg=TAGS[t]||TAGS.update;return `<span class="tag" style="background:${tg.bg};color:${tg.c}">${tg.l}</span>`}
+function qsHtml(s){const st=QS[s]||QS.open;return `<span class="tag" style="background:${st.bg};color:${st.c}">${st.l}</span>`}
+
+// ===== DASHBOARD =====
+function renderDashboard(){
+const openQ=D.questions.filter(q=>q.status==="open").length;
+const blocked=D.tasks.filter(t=>t.status==="blocked").length;
+const done=D.tasks.filter(t=>t.status==="done").length;
+let h=`<div class="metrics">
+<div class="metric"><div class="lab">\u05E2\u05D3\u05DB\u05D5\u05E0\u05D9\u05DD</div><div class="val" style="color:#1565C0">${D.updates.length}</div></div>
+<div class="metric"><div class="lab">\u05E9\u05D0\u05D9\u05DC\u05EA\u05D5\u05EA \u05E4\u05EA\u05D5\u05D7\u05D5\u05EA</div><div class="val" style="color:#E65100">${openQ}</div></div>
+<div class="metric"><div class="lab">\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05D7\u05E1\u05D5\u05DE\u05D5\u05EA</div><div class="val" style="color:#C62828">${blocked}</div></div>
+<div class="metric"><div class="lab">\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05E9\u05D4\u05D5\u05E9\u05DC\u05DE\u05D5</div><div class="val" style="color:#2E7D32">${done}</div></div>
+</div>`;
+h+=`<div class="sec-hdr"><h2>\u05E2\u05D3\u05DB\u05D5\u05E0\u05D9\u05DD \u05D0\u05D7\u05E8\u05D5\u05E0\u05D9\u05DD</h2><button onclick="setTab('updates')">\u05E8\u05D0\u05D4 \u05D4\u05DB\u05DC</button></div>`;
+D.updates.slice(0,3).forEach(u=>{h+=updateCard(u)});
+h+=`<div class="sec-hdr"><h2>\u05E9\u05D0\u05D9\u05DC\u05EA\u05D5\u05EA \u05E4\u05EA\u05D5\u05D7\u05D5\u05EA</h2><button onclick="setTab('questions')">\u05E8\u05D0\u05D4 \u05D4\u05DB\u05DC</button></div>`;
+D.questions.filter(q=>q.status==="open").slice(0,3).forEach(q=>{h+=questionCard(q,true)});
+return h;
+}
+
+function updateCard(u){
+const tg=TAGS[u.tag]||TAGS.update;
+return `<div class="card card-accent" style="border-right-color:${tg.c}">
+<div>${tagHtml(u.tag)} <span class="meta">${esc(u.date)} \u00B7 ${esc(u.author)}</span></div>
+<p>${esc(u.text)}</p></div>`;
+}
+
+// ===== UPDATES =====
+function renderUpdates(){
+let h=`<div class="form-box">
+<textarea id="upd-text" rows="3" placeholder="\u05E2\u05D3\u05DB\u05D5\u05DF \u05D7\u05D3\u05E9..."></textarea>
+<div class="form-row">
+${Object.entries(TAGS).map(([k,v])=>`<button class="tag-btn" data-utag="${k}" style="color:${v.c};border-color:${v.c}30" onclick="pickUTag('${k}')">${v.l}</button>`).join("")}
+<div style="flex:1"></div>
+<button class="btn-primary" onclick="addUpdate()">\u05E4\u05E8\u05E1\u05DD</button>
+</div></div>`;
+D.updates.forEach(u=>{h+=updateCard(u)});
+return h;
+}
+
+// ===== QUESTIONS =====
+function questionCard(q,compact){
+const expanded=!compact&&expandedQ===q.id;
+let h=`<div class="card" onclick="${compact?"":"toggleQ('"+q.id+"')"}">
+<div>${qsHtml(q.status)} <span class="tag" style="background:#f5f5f5;color:#555">${esc(q.category)}</span> <span class="meta">${esc(q.date)} \u00B7 ${esc(q.author)}</span></div>
+<p style="font-weight:500">${esc(q.text)}</p>`;
+if(!compact&&q.answers&&q.answers.length>0){
+h+=`<div class="q-answers">`;
+q.answers.forEach(a=>{h+=`<div class="q-answer"><b>${esc(a.author)}</b> (${esc(a.date)}): ${esc(a.text)}</div>`});
+h+=`</div>`;
+}
+if(!compact){
+h+=`<div class="q-actions" onclick="event.stopPropagation()">`;
+Object.entries(QS).filter(([k])=>k!==q.status).forEach(([k,v])=>{
+h+=`<button class="btn-sm" style="border-color:${v.c}40;color:${v.c};background:${v.bg}" onclick="setQStatus('${q.id}','${k}')">${v.l}</button>`;
+});
+h+=`<button class="btn-sm" style="border-color:#ddd;color:#555;background:#fff" onclick="showReply('${q.id}')">+ \u05EA\u05D2\u05D5\u05D1\u05D4</button>`;
+h+=`</div>`;
+if(replyQ===q.id){
+h+=`<div class="q-reply" onclick="event.stopPropagation()">
+<input type="text" id="reply-${q.id}" placeholder="\u05EA\u05D2\u05D5\u05D1\u05D4...">
+<button class="btn-primary" onclick="addReply('${q.id}')">\u05E9\u05DC\u05D7</button></div>`;
+}
+}
+h+=`</div>`;
+return h;
+}
+
+function renderQuestions(){
+let h=`<div class="form-box">
+<input type="text" id="q-text" placeholder="\u05E9\u05D0\u05DC\u05D4 \u05D0\u05D5 \u05D4\u05EA\u05DC\u05D1\u05D8\u05D5\u05EA \u05D7\u05D3\u05E9\u05D4...">
+<div class="form-row">
+${CATS.map(c=>`<button class="tag-btn" data-qcat="${c}" onclick="pickQCat('${c}')">${c}</button>`).join("")}
+<div style="flex:1"></div>
+<button class="btn-primary" onclick="addQuestion()">\u05D4\u05D5\u05E1\u05E3</button>
+</div></div>`;
+D.questions.forEach(q=>{h+=questionCard(q,false)});
+return h;
+}
+
+// ===== TASKS =====
+function renderTasks(){
+let h=`<div class="form-box" style="display:flex;gap:8px;align-items:center">
+<input type="text" id="t-text" placeholder="\u05DE\u05E9\u05D9\u05DE\u05D4 \u05D7\u05D3\u05E9\u05D4..." style="flex:1">
+<select id="t-pri" style="padding:8px;border-radius:6px;border:1px solid #ddd;font-size:12px;font-family:inherit">
+${Object.entries(PR).map(([k,v])=>`<option value="${k}">${v.l}</option>`).join("")}
+</select>
+<button class="btn-primary" onclick="addTask()">+</button>
+</div>`;
+["blocked","inprogress","todo","done"].forEach(g=>{
+const tasks=D.tasks.filter(t=>t.status===g);
+if(!tasks.length) return;
+const gs=TS[g];
+h+=`<div class="task-group"><div class="gh"><span class="tag" style="background:${gs.bg};color:${gs.c}">${gs.l}</span><span class="meta">${tasks.length}</span></div>`;
+tasks.forEach(t=>{
+const pr=PR[t.priority];
+h+=`<div class="task-item"><div class="name"><span class="dot" style="background:${pr.c}"></span><span>${esc(t.text)}</span></div>
+<div class="task-btns">${Object.entries(TS).filter(([k])=>k!==t.status).map(([k,v])=>`<button class="btn-sm" style="border-color:${v.c}30;color:${v.c}" onclick="setTStatus('${t.id}','${k}')">${v.l}</button>`).join("")}</div></div>`;
+});
+h+=`</div>`;
+});
+return h;
+}
+
+// ===== MOCKUPS =====
+let mockView="cook",mockStep=0;
+function renderMockups(){
+const screens=MOCK[mockView];
+const s=screens[mockStep%screens.length];
+let h=`<div class="mock-tabs">
+${[["cook","Cook Side"],["mashgiach","Mashgiach Side"],["alerts","Alerts"]].map(([k,l])=>`<button class="${mockView===k?"on":""}" onclick="setMock('${k}')">${l}</button>`).join("")}
+</div>
+<div class="mock-wrap">
+<div class="phone">
+<div class="sb"><span>9:41</span><b>AishPlug</b><span>100%</span></div>
+<div class="sh">${esc(s.t)}</div>
+<div class="sd">${esc(s.d)}</div>
+${s.items.map(i=>`<div class="si">${esc(i)}</div>`).join("")}
+<div class="dots">${screens.map((_,i)=>`<span class="${i===mockStep%screens.length?"on":""}"></span>`).join("")}</div>
+</div>
+<div class="mock-info">
+<h3>\u05DE\u05E1\u05DA ${(mockStep%screens.length)+1} \u05DE\u05EA\u05D5\u05DA ${screens.length}</h3>
+<p>${esc(s.d)}</p>
+<div class="mock-nav">
+<button class="btn-outline" onclick="mockPrev()">\u05D4\u05E7\u05D5\u05D3\u05DD</button>
+<button class="btn-primary" onclick="mockNext()">\u05D4\u05D1\u05D0</button>
+</div>
+</div>
+</div>`;
+return h;
+}
+
+// ===== DOCS =====
+function renderDocs(){
+const docs=[
+{n:"AishPlug Product Kit",d:"Full product document: executive summary, architecture, BOM, business model, roadmap",dt:"2026-03-18"},
+{n:"AishPlug Analysis",d:"Initial analysis \u2014 3 product options, comparison, recommendation",dt:"2026-03-18"}
+];
+let h=`<div style="margin-top:20px">`;
+docs.forEach(d=>{h+=`<div class="doc-card"><h3>${esc(d.n)}</h3><div class="dd">${esc(d.d)}</div><div class="dt">${esc(d.dt)}</div></div>`});
+h+=`<div class="placeholder"><p>\u05DE\u05E1\u05DE\u05DA \u05E9\u05D0\u05DC\u05D5\u05EA \u05D4\u05DC\u05DB\u05EA\u05D9\u05D5\u05EA \u05DC\u05E4\u05D5\u05E1\u05E7</p><div class="sm">\u05D9\u05E0\u05D5\u05E1\u05D7 \u05D0\u05D7\u05E8\u05D9 \u05E7\u05D1\u05DC\u05EA \u05DB\u05D9\u05D5\u05D5\u05DF \u05D4\u05DC\u05DB\u05EA\u05D9 \u05E8\u05D0\u05E9\u05D5\u05E0\u05D9</div></div>`;
+h+=`</div>`;
+return h;
+}
+
+// ===== SYNC =====
+function renderSync(){
+const ts=localStorage.getItem(SK+"-ts");
+return `<div class="sync">
+<button class="btn-outline" onclick="exportData()">\u05D9\u05D9\u05E6\u05D5\u05D0 JSON</button>
+<button class="btn-outline" onclick="document.getElementById('imp').click()">\u05D9\u05D9\u05D1\u05D5\u05D0 JSON</button>
+<input type="file" id="imp" accept=".json" style="display:none" onchange="importData(this)">
+<button class="btn-outline" onclick="resetData()">\u05D0\u05D9\u05E4\u05D5\u05E1 \u05DC\u05D1\u05E8\u05D9\u05E8\u05EA \u05DE\u05D7\u05D3\u05DC</button>
+<span class="ts">${ts?"\u05E2\u05D3\u05DB\u05D5\u05DF \u05D0\u05D7\u05E8\u05D5\u05DF: "+new Date(ts).toLocaleString("he-IL"):""}</span>
+</div>`;
+}
+
+// ===== ACTIONS =====
+let selUTag="update",selQCat="Halacha";
+
+window.setTab=function(t){tab=t;render()};
+window.setMock=function(v){mockView=v;mockStep=0;render()};
+window.mockNext=function(){mockStep++;render()};
+window.mockPrev=function(){mockStep=Math.max(0,mockStep-1);render()};
+window.toggleQ=function(id){expandedQ=expandedQ===id?null:id;render()};
+window.showReply=function(id){replyQ=replyQ===id?null:id;render()};
+
+window.pickUTag=function(t){selUTag=t;render()};
+window.pickQCat=function(c){selQCat=c;render()};
+
+window.addUpdate=function(){
+const el=document.getElementById("upd-text");if(!el||!el.value.trim())return;
+D.updates.unshift({id:uid(),date:today(),author:"\u05D0\u05E0\u05D9",text:el.value.trim(),tag:selUTag});
+save();render();
+};
+
+window.addQuestion=function(){
+const el=document.getElementById("q-text");if(!el||!el.value.trim())return;
+D.questions.unshift({id:uid(),date:today(),author:"\u05D0\u05E0\u05D9",text:el.value.trim(),status:"open",category:selQCat,answers:[]});
+save();render();
+};
+
+window.addTask=function(){
+const el=document.getElementById("t-text");const pr=document.getElementById("t-pri");
+if(!el||!el.value.trim())return;
+D.tasks.push({id:uid(),text:el.value.trim(),status:"todo",priority:pr?pr.value:"high"});
+save();render();
+};
+
+window.setQStatus=function(id,s){const q=D.questions.find(x=>x.id===id);if(q){q.status=s;save();render()}};
+window.setTStatus=function(id,s){const t=D.tasks.find(x=>x.id===id);if(t){t.status=s;save();render()}};
+
+window.addReply=function(id){
+const el=document.getElementById("reply-"+id);if(!el||!el.value.trim())return;
+const q=D.questions.find(x=>x.id===id);
+if(q){q.answers.push({author:"\u05D0\u05E0\u05D9",date:today(),text:el.value.trim()});replyQ=null;save();render()}
+};
+
+window.exportData=function(){
+const blob=new Blob([JSON.stringify(D,null,2)],{type:"application/json"});
+const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+a.download="aishplug-workspace-data.json";a.click();
+};
+
+window.importData=function(input){
+if(!input.files[0])return;
+const reader=new FileReader();
+reader.onload=function(e){
+try{D=JSON.parse(e.target.result);save();render();alert("\u05D4\u05E0\u05EA\u05D5\u05E0\u05D9\u05DD \u05D9\u05D5\u05D1\u05D0\u05D5 \u05D1\u05D4\u05E6\u05DC\u05D7\u05D4!")}
+catch(err){alert("\u05E7\u05D5\u05D1\u05E5 \u05DC\u05D0 \u05EA\u05E7\u05D9\u05DF")}
+};
+reader.readAsText(input.files[0]);
+};
+
+window.resetData=function(){
+if(confirm("\u05DC\u05D0\u05E4\u05E1 \u05D0\u05EA \u05DB\u05DC \u05D4\u05E0\u05EA\u05D5\u05E0\u05D9\u05DD \u05D5\u05DC\u05D7\u05D6\u05D5\u05E8 \u05DC\u05D1\u05E8\u05D9\u05E8\u05EA \u05DE\u05D7\u05D3\u05DC?")){
+D=JSON.parse(JSON.stringify(INIT));save();render();
+}
+};
+
+function attachEvents(){
+// highlight active tag buttons
+document.querySelectorAll("[data-utag]").forEach(b=>{
+if(b.dataset.utag===selUTag){b.style.borderWidth="2px";b.style.background=TAGS[selUTag].bg}
+});
+document.querySelectorAll("[data-qcat]").forEach(b=>{
+if(b.dataset.qcat===selQCat){b.style.borderColor="#1a1a1a";b.style.background="#1a1a1a";b.style.color="#fff";b.style.borderWidth="2px"}
+});
+}
+
+// ===== INIT =====
+load();
+render();
+</script>
+</body>
+</html>
